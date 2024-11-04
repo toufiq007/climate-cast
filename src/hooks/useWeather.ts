@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { IWeatherData } from "../types/types";
 
 const useWeather = () => {
@@ -8,8 +8,8 @@ const useWeather = () => {
     climate: "",
     cloudPercentage: "",
     humidity: "",
-    lattitude: "",
-    longitude: "",
+    lattitude: 0,
+    longitude: 0,
     maxTemperature: "",
     minTemperature: "",
     temperature: "",
@@ -19,7 +19,7 @@ const useWeather = () => {
   const [isLoading, setisLoading] = useState({ state: false, message: "" });
   const [isError, setisError] = useState(null);
 
-  const fetchWeatherData = async (latitude: string, longitude: string) => {
+  const fetchWeatherData = async (latitude: number, longitude: number) => {
     try {
       setisLoading({
         ...isLoading,
@@ -48,7 +48,7 @@ const useWeather = () => {
         lattitude: longitude,
         longitude: latitude,
         maxTemperature: data?.main?.temp_max,
-        minTemperatur: data?.main?.temp_min,
+        minTemperature: data?.main?.temp_min,
         temperature: data?.main?.temp,
         time: data?.dt,
         wind: data?.wind?.speed,
@@ -63,11 +63,17 @@ const useWeather = () => {
     }
   };
 
+  useEffect(() => {
+    setisLoading({ state: true, message: "findind location..." });
+    navigator.geolocation.getCurrentPosition((position) => {
+      fetchWeatherData(position.coords.latitude, position.coords.longitude);
+    });
+  }, []);
+
   return {
     weatherData,
     isLoading,
     isError,
-    fetchWeatherData,
   };
 };
 

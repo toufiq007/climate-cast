@@ -8,6 +8,6 @@ export type IWeatherData = {
   cloudPercentage: string;
   wind: string;
   time: string;
-  longitude: string;
-  lattitude: string;
+  longitude: number;
+  lattitude: number;
 };

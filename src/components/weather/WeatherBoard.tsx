@@ -1,8 +1,12 @@
+import { useWeather } from "../../hooks";
 import AddFavourite from "./AddFavourite";
 import WeatherCondition from "./WeatherCondition";
 import WeatherHeading from "./WeatherHeading";
 
 const WeatherBoard = () => {
+  const { weatherData, isError, isLoading } = useWeather();
+  
+  console.log({ weatherData, isError, isLoading });
   return (
     <div className="flex justify-center items-center h-[100vh]">
       <section className="">
